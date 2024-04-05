@@ -6,12 +6,7 @@ import { registerRoute } from "../utils/APIRoutes";
 
 export default function Register() {
   const navigate = useNavigate();
-  const [values, setValues] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+
 
   useEffect(() => {
     if (localStorage.getItem("USER")) {
@@ -19,12 +14,13 @@ export default function Register() {
     }
   }, []);
 
-  const handleChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
+  
 
-  const handleValidation = () => {
-    const { password, confirmPassword, username, email } = values;
+  const handleValidation = (event) => {
+    const username = event.target.elements.username.value;
+    const email= event.target.elements.email.value;
+    const password= event.target.elements.password.value;
+    const confirmPassword= event.target.elements.confirmPassword.value
     if (password !== confirmPassword) {
       alert("Password and confirm password should be same.");
       return false;
@@ -43,8 +39,11 @@ export default function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (handleValidation()) {
-      const { email, username, password } = values;
+    if (handleValidation(event)) {
+      const username = event.target.elements.username.value;
+      const email= event.target.elements.email.value;
+      const password= event.target.elements.password.value;
+      const confirmPassword= event.target.elements.confirmPassword.value;
       const { data } = await axios.post(registerRoute, {
         username,
         email,
@@ -76,25 +75,21 @@ export default function Register() {
             type="text"
             placeholder="Username"
             name="username"
-            onChange={(e) => handleChange(e)}
           />
           <input
             type="email"
             placeholder="Email"
             name="email"
-            onChange={(e) => handleChange(e)}
           />
           <input
             type="password"
             placeholder="Password"
             name="password"
-            onChange={(e) => handleChange(e)}
           />
           <input
             type="password"
             placeholder="Confirm Password"
             name="confirmPassword"
-            onChange={(e) => handleChange(e)}
           />
           <button type="submit">Create User</button>
           <span>

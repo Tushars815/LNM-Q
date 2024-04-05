@@ -13,12 +13,9 @@ export default function Login() {
     }
   }, []);
 
-  const handleChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
-
-  const validateForm = () => {
-    const { username, password } = values;
+  const validateForm = (event) => {
+    const username = event.target.elements.username.value;
+    const password= event.target.elements.password.value;
     if (username === "") {
       alert("Email and Password is required.");
       return false;
@@ -32,8 +29,9 @@ export default function Login() {
   const handleSubmit = async (event) => {
     // console.log("Form Submitted Login");
     event.preventDefault();
-    if (validateForm()) {
-      const { username, password } = values;
+    if (validateForm(event)) {
+      const username = event.target.elements.username.value;
+      const password= event.target.elements.password.value;
       const { data } = await axios.post(loginRoute, {
         username,
         password,
@@ -63,14 +61,12 @@ export default function Login() {
             type="text"
             placeholder="Username"
             name="username"
-            onChange={(e) => handleChange(e)}
             min="3"
           />
           <input
             type="password"
             placeholder="Password"
             name="password"
-            onChange={(e) => handleChange(e)}
           />
           <button type="submit">Log In</button>
           <span>
