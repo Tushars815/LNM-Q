@@ -12,9 +12,7 @@ export default function Post() {
   const [reload, setreload] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null); // Track selected post for reply
 
-  const username = JSON.parse(
-    localStorage.getItem("USER")
-  ).username;
+  
 
   useEffect(()=>{
     axios
@@ -29,6 +27,9 @@ export default function Post() {
   const handleSubmit = async (event) => {
     event.preventDefault();
       const  text  = event.target.elements.text.value;
+      const username = JSON.parse(
+        localStorage.getItem("USER")
+      ).username;
       if(text.length <1){
         alert("Empty");
         return false;
@@ -69,7 +70,7 @@ export default function Post() {
         </form>
         <div className="posts-section">
             <ul>
-              {posts.map((post) => (
+              {posts && posts.map((post) => (
                 <li key={post._id} onClick={() => handleReplyClick(post._id)}>
                   <p>{post.username}</p>
                   <p>{post.text}</p>
