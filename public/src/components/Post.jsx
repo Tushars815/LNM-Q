@@ -3,13 +3,15 @@ import Logout  from './Logout'
 import axios from 'axios'
 import { allPostsRoute, addPostRoute } from '../utils/APIRoutes'
 import { useNavigate, Link } from "react-router-dom";
+import Reply from './Reply';
 
 export default function Post() {
 
   const navigate = useNavigate();
   const [posts, setposts] = useState([]);
   const [reload, setreload] = useState(false);
-  const [values, setValues] = useState({ text: ""});
+  const [selectedPost, setSelectedPost] = useState(null); // Track selected post for reply
+
   const username = JSON.parse(
     localStorage.getItem("USER")
   ).username;
@@ -24,13 +26,9 @@ export default function Post() {
     .catch((e) => console.log(e));
   },[reload])
 
-  const handleChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-      const { text } = values;
+      const  text  = event.target.elements.text.value;
       if(text.length <1){
         alert("Empty");
         return false;
@@ -50,6 +48,9 @@ export default function Post() {
       setreload(!reload);
   };
 
+  const handleReplyClick= (postId)=>{
+    navigate(`/posts/${postId}`)
+  }
 
   return (
     <div className='FormContainer'>
@@ -62,7 +63,6 @@ export default function Post() {
             type="text"
             placeholder="ADD TEXT HERE"
             name="text"
-            onChange={(e) => handleChange(e)}
             min="1"
           />
           <button type="submit">ADD POST</button>
@@ -70,9 +70,10 @@ export default function Post() {
         <div className="posts-section">
             <ul>
               {posts.map((post) => (
-                <li key={post._id}>
+                <li key={post._id} onClick={() => handleReplyClick(post._id)}>
                   <p>{post.username}</p>
                   <p>{post.text}</p>
+                  <button> Reply </button>
                   <br></br>
                 </li>
               ))}

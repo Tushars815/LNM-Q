@@ -10,11 +10,11 @@ const PostSchema = mongoose.Schema({
         type: String,
         required: true
       },
-      replies:{
+      replies:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Reply',
+        ref: 'Reply'
+      }]
       },
-    },
 
     {
       timestamps: true,
