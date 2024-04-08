@@ -8,7 +8,7 @@ export default function Reply({ postId }) {
     const navigate = useNavigate();
     const [post, setpost] = useState(null);
     const [reload, setreload] = useState(false);
-    const [username, setusername] =useState(null);
+    const [currusername, setusername] =useState(null);
 
     useEffect(()=>{
     if (localStorage.getItem("USER")) {
@@ -19,7 +19,7 @@ export default function Reply({ postId }) {
     }
   })
     
-  
+
 
     useEffect(() => {
       axios
@@ -39,7 +39,7 @@ export default function Reply({ postId }) {
           }
           const { data } = await axios.post(addReplyRoute, {
             text,
-            username,
+            currusername,
             postId
           });
           if (data.status === false) {
@@ -51,10 +51,15 @@ export default function Reply({ postId }) {
           event.target.elements.text.value="";
           setreload(!reload);
       };
+
+      const handleUsernameClick = (username) => {
+        navigate(`/posts?username=${username}`);
+      };
+
     return (
       <div className='FormContainer'>
         <Logout/>
-        <button>My Profile</button>
+        <button onClick={()=> handleUsernameClick(currusername)}>My Profile</button>
         <form action="" onSubmit={(event) => handleSubmit(event)}>
             <div className="heading">
               <h1>WRITE REPLY</h1>
@@ -76,7 +81,7 @@ export default function Reply({ postId }) {
                   <ul>
                      {post.replies && post.replies.reverse().map((reply) => (
                         <li key={reply._id}>
-                          <p>Username: {reply.username}</p>
+                          <p onClick={()=> handleUsernameClick(reply.username)}>Username: {reply.username}</p>
                           <p>{reply.text}</p>
                           <br></br>
                         </li> 

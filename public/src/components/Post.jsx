@@ -2,16 +2,17 @@ import React, { useEffect,useState } from 'react'
 import Logout  from './Logout'
 import axios from 'axios'
 import { allPostsRoute, addPostRoute } from '../utils/APIRoutes'
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation} from "react-router-dom";
 import Reply from './Reply';
 import '../css/post.css';
 
 export default function Post() {
 
   const navigate = useNavigate();
+  const location =useLocation();
   const [posts, setposts] = useState([]);
   const [reload, setreload] = useState(false);
-  const [username, setusername] =useState(null);
+  const [currusername, setusername] =useState(null);
 
   
   useEffect(()=>{
@@ -22,7 +23,6 @@ export default function Post() {
      setusername(data);
     }
   })
-  
   
 
   useEffect(()=>{
@@ -46,7 +46,7 @@ export default function Post() {
     //   console.log(username);
       const { data } = await axios.post(addPostRoute, {
         text,
-        username
+        currusername
       });
       if (data.status === false) {
         alert(data.msg);
@@ -61,35 +61,67 @@ export default function Post() {
   const handleReplyClick= (postId)=>{
     navigate(`/posts/${postId}`)
   }
+  const handleUsernameClick = (username) => {
+    navigate(`/posts?username=${username}`);
+  };
 
-  return (
-    <div className='FormContainer'>
-        <Logout/>
-        <button>My Profile</button>
-        <form action="" onSubmit={(event) => handleSubmit(event)}>
-            <div className="heading">
-              <h1>WRITE POST</h1>
-            </div>
-          <input
-            type="text"
-            placeholder="ADD TEXT HERE"
-            name="text"
-            min="1"
-          />
-          <button type="submit">ADD POST</button>
-        </form>
-        <div className="posts-section">
+  const showPosts = () => {
+    if (location.search) {
+      const params = new URLSearchParams(location.search);
+      const clickedUsername = params.get('username');
+      return (
+        <>
+          <div className="posts-section">
+            <p>{clickedUsername}</p>
             <ul>
-              {posts && posts.map((post) => (
-                <li key={post._id} onClick={() => handleReplyClick(post._id)}>
-                  <p>{post.username}</p>
-                  <p>{post.text}</p>
-                  <button> Reply </button>
+              {posts && posts.filter((post) => post.username === clickedUsername).map((post) => (
+                <li key={post._id}>
+                  <div onClick={() => handleReplyClick(post._id)}>
+                    <p>{post.text}</p>
+                    <button> Reply </button>
+                  </div>
                   <br></br>
                 </li>
               ))}
             </ul>
           </div>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <button onClick={()=> handleUsernameClick(currusername)}>My Profile</button>
+          <form action="" onSubmit={(event) => handleSubmit(event)}>
+            <div className="heading">
+              <h1>WRITE POST</h1>
+            </div>
+            <input type="text" placeholder="ADD TEXT HERE" name="text" min="1" />
+            <button type="submit">ADD POST</button>
+          </form>
+          <div className="posts-section">
+            <ul>
+              {posts && posts.map((post) => (
+                <li key={post._id}>
+                  <p onClick={()=> handleUsernameClick(post.username)}>{post.username}</p>
+                  <div onClick={() => handleReplyClick(post._id)}>
+                    <p>{post.text}</p>
+                    <button> Reply </button>
+                  </div>
+                  <br></br>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      );
+    }
+  };
+  
+
+  return (
+    <div className='FormContainer'>
+        <Logout/>
+        {showPosts()}
     </div>
   )
 }
