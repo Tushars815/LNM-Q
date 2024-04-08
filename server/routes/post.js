@@ -67,6 +67,7 @@ router.post("/addpost", async (req, res, next) => {
     }
   });
 
+  
 router.get("/post/:id", async (req, res, next) => {
   console.log("hello");
   const id = req.params.id;
