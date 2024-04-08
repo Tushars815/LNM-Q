@@ -47,6 +47,7 @@ export default function Reply({ postId }) {
           if (data.status === true) {
             alert("Reply Added Successfully");
           }
+          event.target.elements.text.value="";
           setreload(!reload);
       };
     return (

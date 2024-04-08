@@ -4,6 +4,7 @@ import axios from 'axios'
 import { allPostsRoute, addPostRoute } from '../utils/APIRoutes'
 import { useNavigate, Link } from "react-router-dom";
 import Reply from './Reply';
+import '../css/post.css';
 
 export default function Post() {
 
@@ -52,6 +53,7 @@ export default function Post() {
       if (data.status === true) {
         alert("Post Added Successfully");
       }
+      event.target.elements.text.value="";
       setreload(!reload);
   };
 
