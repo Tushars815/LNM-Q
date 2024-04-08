@@ -26,7 +26,6 @@ router.get("/allposts/:postId", async (req, res, next) => {
           return res.status(404).json({ message: "Post not found" });
       }
       
-      // Extract only the necessary fields from replies
       const populatedPost = {
           _id: post._id,
           text: post.text,
@@ -37,7 +36,7 @@ router.get("/allposts/:postId", async (req, res, next) => {
               username: reply.username
           }))
       };
-      console.log(populatedPost);
+      //console.log(populatedPost);
       res.json(populatedPost);
 
     } catch (ex) {

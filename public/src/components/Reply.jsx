@@ -2,14 +2,23 @@ import React, { useEffect,useState } from 'react'
 import { allPostsRoute , addReplyRoute} from '../utils/APIRoutes'
 import { useNavigate, Link } from "react-router-dom";
 import axios from 'axios'
+import Logout from './Logout';
+
 export default function Reply({ postId }) {
     const navigate = useNavigate();
     const [post, setpost] = useState(null);
     const [reload, setreload] = useState(false);
+    const [username, setusername] =useState(null);
 
-    const username = JSON.parse(
-      localStorage.getItem("USER")
-    ).username;
+    useEffect(()=>{
+    if (localStorage.getItem("USER")) {
+      const data = JSON.parse(
+       localStorage.getItem("USER")
+     ).username;
+     setusername(data);
+    }
+  })
+    
 
     useEffect(() => {
       axios
@@ -42,6 +51,8 @@ export default function Reply({ postId }) {
       };
     return (
       <div className='FormContainer'>
+        <Logout/>
+        <button>My Profile</button>
         <form action="" onSubmit={(event) => handleSubmit(event)}>
             <div className="heading">
               <h1>WRITE REPLY</h1>

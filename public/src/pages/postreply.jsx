@@ -14,7 +14,6 @@ export default function Posts() {
 
   const params = useParams();
   const postId = params.postId;
- // console.log(postId);
 
   return (
     <>

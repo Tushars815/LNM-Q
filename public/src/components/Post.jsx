@@ -10,8 +10,17 @@ export default function Post() {
   const navigate = useNavigate();
   const [posts, setposts] = useState([]);
   const [reload, setreload] = useState(false);
-  const [selectedPost, setSelectedPost] = useState(null); // Track selected post for reply
+  const [username, setusername] =useState(null);
 
+  useEffect(()=>{
+    if (localStorage.getItem("USER")) {
+      const data = JSON.parse(
+       localStorage.getItem("USER")
+     ).username;
+     setusername(data);
+    }
+  })
+  
   
 
   useEffect(()=>{
@@ -27,9 +36,6 @@ export default function Post() {
   const handleSubmit = async (event) => {
     event.preventDefault();
       const  text  = event.target.elements.text.value;
-      const username = JSON.parse(
-        localStorage.getItem("USER")
-      ).username;
       if(text.length <1){
         alert("Empty");
         return false;
@@ -56,6 +62,7 @@ export default function Post() {
   return (
     <div className='FormContainer'>
         <Logout/>
+        <button>My Profile</button>
         <form action="" onSubmit={(event) => handleSubmit(event)}>
             <div className="heading">
               <h1>WRITE POST</h1>
