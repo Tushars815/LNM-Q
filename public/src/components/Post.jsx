@@ -13,6 +13,7 @@ export default function Post() {
   const [reload, setreload] = useState(false);
   const [username, setusername] =useState(null);
 
+  
   useEffect(()=>{
     if (localStorage.getItem("USER")) {
       const data = JSON.parse(
