@@ -7,7 +7,7 @@ const router = require("express").Router();
 router.post("/addreply", async (req, res, next) => {
     try {
       //  console.log("reply add");
-        const username = req.body.username;
+        const username = req.body.currusername;
         const text = req.body.text;
         const postId= req.body.postId;
        // console.log(postId);
@@ -19,7 +19,7 @@ router.post("/addreply", async (req, res, next) => {
       //  console.log(post);
         post.replies.push(reply._id);
         await post.save();
-        return res.json({ status: true, reply });
+        return res.json({status: true});
     } catch (ex) {
       next(ex);
     }

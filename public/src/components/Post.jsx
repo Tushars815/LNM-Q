@@ -18,7 +18,7 @@ export default function Post() {
       const data = JSON.parse(localStorage.getItem("USER")).username;
       setusername(data);
     }
-  });
+  },[]);
 
   useEffect(() => {
     axios

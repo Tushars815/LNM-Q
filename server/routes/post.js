@@ -23,7 +23,7 @@ router.get("/allposts/:postId", async (req, res, next) => {
     const post = await Post.findOne({ _id: postId }).populate("replies");
 
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return res.status(404).json({ status: false, msg: "Post not found" });
     }
 
     const populatedPost = {
@@ -45,11 +45,11 @@ router.get("/allposts/:postId", async (req, res, next) => {
 
 router.post("/addpost", async (req, res, next) => {
   try {
-    const username = req.body.username;
+    const username = req.body.currusername;
     const text = req.body.text;
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ status:false, msg: "User not found" });
     }
     // console.log(text);
     // console.log(username);
@@ -60,9 +60,51 @@ router.post("/addpost", async (req, res, next) => {
     user.posts.push(post._id);
     await user.save();
 
-    return res.json({ status: true, post });
+    return res.json({ status: true });
   } catch (ex) {
     next(ex);
   }
 });
+
+router.post("/deletepost", async(req,res,next) =>{
+  try{
+    const postId= req.body.postId;
+    const post = await Post.findOne({ _id: postId });
+    if (!post) {
+      return res.status(404).json({ status:false, msg: "Post not found" });
+    }
+    await Reply.deleteMany({ _id: { $in: post.replies } });
+
+    await Post.deleteOne({ _id: postId });
+
+    return res.json({ status: true, msg: "Post deleted successfully" });
+
+  } catch (ex){
+    next(ex);
+  }
+})
+
+router.post("/deletereply", async (req, res, next) => {
+  try {
+    const postId = req.body.postId;
+    const replyId = req.body.replyId;
+    const reply = await Reply.findOne({ _id: replyId });
+    if (!reply) {
+      return res.status(404).json({ status: false, msg: "Reply not found" });
+    }
+    await Reply.deleteOne({ _id: replyId });
+
+    const post = await Post.findOne({ _id: postId });
+    if (!post) {
+      return res.status(404).json({ status: false, msg: "Post not found" });
+    }
+    post.replies = post.replies.filter((id) => id.toString() !== replyId);
+    await post.save();
+    return res.json({ status: true, msg: "Reply deleted successfully" });
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+
 module.exports = router;
