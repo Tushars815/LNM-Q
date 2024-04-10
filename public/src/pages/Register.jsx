@@ -95,14 +95,14 @@ export default function Register() {
           </span>
         </form>
         </div> */}
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex items-center justify-center min-h-screen bg-[url('https://images.unsplash.com/photo-1596468138838-0f34c2d0773b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-fixed">
         <div className=" max-w-md mx-auto bg-[#F8E7D5] rounded-xl shadow-xl border border-gray-300 overflow-hidden md:max-w-2xl">
           <div className="md:grid md:grid-cols-2">
             <div className="md:shrink-0">
               <img
                 className="h-48 w-full object-cover md:h-full "
                 src={im}
-                alt="Modern building architecture"
+                alt="Basketball Illusion"
               />
             </div>
             <div className="p-8">
