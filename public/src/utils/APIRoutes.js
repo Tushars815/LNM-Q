@@ -1,10 +1,9 @@
-export const host = "http://localhost:5000";
+export const host = "https://lnm-q.onrender.com";
 export const loginRoute = `${host}/api/auth/login`;
 export const registerRoute = `${host}/api/auth/register`;
 export const allPostsRoute = `${host}/api/post/allposts`;
 export const addPostRoute = `${host}/api/post/addpost`;
 export const allReplyRoute = `${host}/api/reply/allreply`;
 export const addReplyRoute = `${host}/api/reply/addreply`;
-export const deletePostRoute=`${host}/api/post/deletepost`;
-export const deleteReplyRoute=`${host}/api/reply/deletereply`;
-
+export const deletePostRoute = `${host}/api/post/deletepost`;
+export const deleteReplyRoute = `${host}/api/reply/deletereply`;
