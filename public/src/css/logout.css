@@ -1,0 +1,10 @@
+.logoutcontainer{
+    width: 4000px;
+    display: flex;
+
+}
+
+.button{
+    float: right;
+    top: 0px;
+}

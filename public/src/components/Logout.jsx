@@ -11,8 +11,10 @@ export default function Logout() {
     navigate("/login");
   };
   return (
-    <div className="button" onClick={handleClick}>
-        LOGOUT
+    <div className="logutcontainer">
+      <div className="button" onClick={handleClick}>
+          LOGOUT
+      </div>
     </div>
   );
 }

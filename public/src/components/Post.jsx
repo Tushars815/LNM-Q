@@ -31,7 +31,7 @@ export default function Post() {
         setTimeout(() => {
           setposts(postData);
           setLoading(false);
-        }, 5000);
+        }, 3000);
       })
       .catch((e) => {
         console.log(e);
@@ -125,10 +125,14 @@ export default function Post() {
                       <p>{post.text}</p>
                       <button> Reply </button>
                     </div>
+                    <div className="post-time">
+                    <p>{new Date(post.createdAt).toLocaleString()}</p>
+                    </div>
                     <br />
                   </li>
                 ))}
             </ul>
+            {loading? <Spinner/>:null}
           </div>
         </>
       );

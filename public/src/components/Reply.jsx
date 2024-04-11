@@ -116,6 +116,8 @@ export default function Reply({ postId }) {
                 <>
                   <p>{post.username}</p>
                   <p>{post.text}</p>
+                  <p>{new Date(post.createdAt).toLocaleString()}</p>
+                    
                   {currusername === post.username && (
                     <>
                       <button onClick={()=> handledeletepost()}>Delete</button>
