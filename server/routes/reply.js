@@ -16,7 +16,7 @@ router.post("/addreply", async (req, res, next) => {
             text,
             username
           });
-      //  console.log(post);
+      //  console.log(reply.createdAt);
         post.replies.push(reply._id);
         await post.save();
         return res.json({status: true});
@@ -25,5 +25,25 @@ router.post("/addreply", async (req, res, next) => {
     }
   });
 
-
+  router.post("/deletereply", async (req, res, next) => {
+    try {
+      const postId = req.body.postId;
+      const replyId = req.body.replyId;
+      const reply = await Reply.findOne({ _id: replyId });
+      if (!reply) {
+        return res.status(404).json({ status: false, msg: "Reply not found" });
+      }
+      await Reply.deleteOne({ _id: replyId });
+  
+      const post = await Post.findOne({ _id: postId });
+      if (!post) {
+        return res.status(404).json({ status: false, msg: "Post not found" });
+      }
+      post.replies = post.replies.filter((id) => id.toString() !== replyId);
+      await post.save();
+      return res.json({ status: true, msg: "Reply deleted successfully" });
+    } catch (ex) {
+      next(ex);
+    }
+  });
 module.exports = router;

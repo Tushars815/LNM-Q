@@ -30,10 +30,12 @@ router.get("/allposts/:postId", async (req, res, next) => {
       _id: post._id,
       text: post.text,
       username: post.username,
+      createdAt: post.createdAt,
       replies: post.replies.map((reply) => ({
         _id: reply._id,
         text: reply.text,
         username: reply.username,
+        createdAt: reply.createdAt
       })),
     };
     //console.log(populatedPost);
@@ -82,29 +84,9 @@ router.post("/deletepost", async(req,res,next) =>{
   } catch (ex){
     next(ex);
   }
-})
-
-router.post("/deletereply", async (req, res, next) => {
-  try {
-    const postId = req.body.postId;
-    const replyId = req.body.replyId;
-    const reply = await Reply.findOne({ _id: replyId });
-    if (!reply) {
-      return res.status(404).json({ status: false, msg: "Reply not found" });
-    }
-    await Reply.deleteOne({ _id: replyId });
-
-    const post = await Post.findOne({ _id: postId });
-    if (!post) {
-      return res.status(404).json({ status: false, msg: "Post not found" });
-    }
-    post.replies = post.replies.filter((id) => id.toString() !== replyId);
-    await post.save();
-    return res.json({ status: true, msg: "Reply deleted successfully" });
-  } catch (ex) {
-    next(ex);
-  }
 });
+
+
 
 
 module.exports = router;

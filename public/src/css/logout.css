@@ -8,3 +8,7 @@
     float: right;
     top: 0px;
 }
+
+.button:hover{
+    cursor: pointer;
+}

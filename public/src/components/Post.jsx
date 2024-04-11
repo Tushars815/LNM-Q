@@ -31,7 +31,7 @@ export default function Post() {
         setTimeout(() => {
           setposts(postData);
           setLoading(false);
-        }, 3000);
+        }, 2500);
       })
       .catch((e) => {
         console.log(e);

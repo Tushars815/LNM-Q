@@ -6,5 +6,5 @@ export const addPostRoute = `${host}/api/post/addpost`;
 export const allReplyRoute = `${host}/api/reply/allreply`;
 export const addReplyRoute = `${host}/api/reply/addreply`;
 export const deletePostRoute=`${host}/api/post/deletepost`;
-export const deleteReplyRoute=`${host}/api/post/deletereply`;
+export const deleteReplyRoute=`${host}/api/reply/deletereply`;
 

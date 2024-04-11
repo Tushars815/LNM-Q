@@ -34,7 +34,7 @@ export default function Reply({ postId }) {
         setTimeout(() => {
           setpost(res.data);
           setLoading(false);
-        }, 5000); 
+        }, 2500); 
       })
       .catch((e) => console.log(e));
       //console.log(post);
@@ -131,6 +131,7 @@ export default function Reply({ postId }) {
                         <li key={reply._id}>
                           <p onClick={()=> handleUsernameClick(reply.username)}>Username: {reply.username}</p>
                           <p>{reply.text}</p>
+                          <p>{new Date(reply.createdAt).toLocaleString()}</p>
                           {currusername === reply.username && (
                             <>
                               <button onClick={()=> handledeletereply(reply._id)}>Delete</button>
