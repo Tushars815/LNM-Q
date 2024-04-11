@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from 'axios'
 import Logout from './Logout';
 import Spinner from './Spinner';
-import "../css/reply.css"
+import "../css/reply.css";
 
 export default function Reply({ postId }) {
     const navigate = useNavigate();

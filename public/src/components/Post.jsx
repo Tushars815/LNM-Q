@@ -76,7 +76,7 @@ export default function Post() {
       return (
         <>
           <div className="posts-section">
-            <p>{clickedUsername}</p>
+            <p>{clickedUsername} Posts</p>
             <ul>
               {posts &&
                 posts
@@ -101,6 +101,7 @@ export default function Post() {
           <button onClick={() => handleUsernameClick(currusername)}>
             My Profile
           </button>
+          <p>All Posts</p>
           <form action="" onSubmit={(event) => handleSubmit(event)}>
             <div className="heading">
               <h1>WRITE POST</h1>
