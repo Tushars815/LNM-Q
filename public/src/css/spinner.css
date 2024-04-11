@@ -1,0 +1,21 @@
+.spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 5px solid transparent;
+  border-top-color: #1a91eb;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #1a91eb, #f98b4c, #a85bf0);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

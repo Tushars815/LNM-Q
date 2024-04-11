@@ -3,12 +3,15 @@ import { allPostsRoute , addReplyRoute, deletePostRoute, deleteReplyRoute} from 
 import { useNavigate, Link } from "react-router-dom";
 import axios from 'axios'
 import Logout from './Logout';
+import Spinner from './Spinner';
+import "../css/reply.css"
 
 export default function Reply({ postId }) {
     const navigate = useNavigate();
     const [post, setpost] = useState(null);
     const [reload, setreload] = useState(false);
     const [currusername, setusername] =useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(()=>{
      // console.log("User check");
@@ -24,10 +27,14 @@ export default function Reply({ postId }) {
 
     useEffect(() => {
       //console.log("Get msg");
+      setLoading(true);
       axios
       .get(`${allPostsRoute}/${postId}`)
       .then((res) => {
-        setpost(res.data);
+        setTimeout(() => {
+          setpost(res.data);
+          setLoading(false);
+        }, 5000); 
       })
       .catch((e) => console.log(e));
       //console.log(post);
@@ -135,6 +142,7 @@ export default function Reply({ postId }) {
                 </>
               )}
           </div>
+          {loading ? <Spinner /> : null}
       </div>
     )
   }

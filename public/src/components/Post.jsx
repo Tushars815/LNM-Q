@@ -5,6 +5,7 @@ import { allPostsRoute, addPostRoute } from "../utils/APIRoutes";
 import { useNavigate, useLocation } from "react-router-dom";
 import Reply from "./Reply";
 import "../css/post.css";
+import Spinner from "./Spinner";
 
 export default function Post() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function Post() {
   const [posts, setposts] = useState([]);
   const [reload, setreload] = useState(false);
   const [currusername, setusername] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("USER")) {
@@ -21,13 +23,20 @@ export default function Post() {
   },[]);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`${allPostsRoute}`)
       .then((res) => {
         const postData = Array.isArray(res.data) ? res.data.reverse() : [];
-        setposts(postData);
+        setTimeout(() => {
+          setposts(postData);
+          setLoading(false);
+        }, 5000);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        setLoading(false); // Make sure to set loading to false on error too
+      });
   }, [reload]);
 
   const handleSubmit = async (event) => {
@@ -83,6 +92,7 @@ export default function Post() {
                   ))}
             </ul>
           </div>
+          {loading? <Spinner/>:null}
         </>
       );
     } else {
