@@ -34,7 +34,7 @@ export default function Reply({ postId }) {
         setTimeout(() => {
           setpost(res.data);
           setLoading(false);
-        }, 2500); 
+        }, 600); 
       })
       .catch((e) => console.log(e));
       //console.log(post);
