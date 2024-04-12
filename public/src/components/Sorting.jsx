@@ -1,6 +1,6 @@
 import React ,{useState} from 'react';
 
-export default function Sorting({ posts, setPosts }) {
+export default function Sorting({ posts, setPosts , isusername}) {
   
   const [oldtonew, setoldtonew] =useState(false);
 
@@ -28,13 +28,15 @@ export default function Sorting({ posts, setPosts }) {
   return (
     <div className='FormContainer bg-green-400'>
       <p>Sort by:</p>
-      {oldtonew==false && (
+      {oldtonew==false ? (
             <button className='block' onClick={OldtoNew}>Oldest to Latest</button>
+      ) : (
+        <button className='block' onClick={OldtoNew}>Latest to Oldest</button>
       )}
-      {oldtonew==true && (
-            <button className='block' onClick={OldtoNew}>Latest to Oldest</button>
+      {isusername==false && (
+         <button className='block' onClick={UserSorting}>Username</button>
       )}
-      <button className='block' onClick={UserSorting}>Username</button>
+      
     </div>
   );
 }
