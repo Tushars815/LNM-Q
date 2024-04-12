@@ -111,6 +111,7 @@ export default function Reply({ postId }) {
           />
           <button type="submit">ADD Reply</button>
         </form>
+        <p>Post: </p>
          <div className="post-section">
                 {post && (
                 <>
