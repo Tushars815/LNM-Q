@@ -4,6 +4,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Posts from "./pages/posts";
 import Postreply from "./pages/postreply";
+import Verifyotp from "./pages/verifyOtp"
+
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/posts" element={<Posts />} />
         <Route path="/posts/:postId" element={<Postreply />} />
+        <Route path="/verify" element={< Verifyotp/>} />
+
       </Routes>
     </BrowserRouter>
   );

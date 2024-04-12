@@ -52,8 +52,8 @@ export default function Register() {
         alert(data.msg);
       }
       if (data.status === true) {
-        localStorage.setItem("USER", JSON.stringify(data.user));
-        navigate("/posts");
+        localStorage.setItem("verificationEmail", email);
+        navigate("/verify");
       }
     }
     // console.log("Form Submitted register");
