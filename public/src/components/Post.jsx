@@ -93,6 +93,7 @@ export default function Post() {
                     <li key={post._id}>
                       <div onClick={() => handleReplyClick(post._id)}>
                         <p>{post.text}</p>
+                        <p>{new Date(post.createdAt).toLocaleString()}</p>
                         <button> Reply </button>
                       </div>
                       <br />
@@ -106,7 +107,7 @@ export default function Post() {
     } else {
       return (
         <>
-          <button onClick={() => handleUsernameClick(currUsername)}>
+          <button onClick={() => handleUsernameClick(currUsername)} >
             My Profile
           </button>
           <p>All Posts</p>
