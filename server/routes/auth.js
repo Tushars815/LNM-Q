@@ -51,6 +51,7 @@ router.post("/register", async (req, res, next) => {
 			userId: user._id,
 			otp: code,
 		}).save();
+    
 
     const msg = `
     <html>
