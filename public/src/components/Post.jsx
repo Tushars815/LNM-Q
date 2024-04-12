@@ -15,6 +15,7 @@ export default function Post() {
   const [reload, setReload] = useState(false);
   const [currUsername, setCurrUsername] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isusername, setIsUsername] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -39,6 +40,9 @@ export default function Post() {
       setCurrUsername(data);
     }
   }, []);
+  useEffect(()=>{
+    setIsUsername(!!location.search)
+  },[location.search])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -149,7 +153,7 @@ export default function Post() {
   return (
     <div className="FormContainer">
       <Logout />
-      <Sorting posts={posts} setPosts={setPosts}/>
+      <Sorting posts={posts} setPosts={setPosts} isusername={isusername}/>
       {showPosts()}
     </div>
   );
