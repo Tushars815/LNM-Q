@@ -3,7 +3,6 @@ import Logout from "./Logout";
 import axios from "axios";
 import { allPostsRoute, addPostRoute } from "../utils/APIRoutes";
 import { useNavigate, useLocation } from "react-router-dom";
-import Reply from "./Reply";
 import "../css/post.css";
 import Spinner from "./Spinner";
 import Sorting from "./Sorting";
@@ -40,9 +39,6 @@ export default function Post() {
       setCurrUsername(data);
     }
   }, []);
-  useEffect(()=>{
-    setIsUsername(!!location.search)
-  },[location.search])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -154,7 +150,7 @@ export default function Post() {
   return (
     <div className="FormContainer">
       <Logout />
-      <Sorting posts={posts} setPosts={setPosts} isusername={isusername}/>
+      <Sorting posts={posts} setPosts={setPosts}/>
       {showPosts()}
     </div>
   );

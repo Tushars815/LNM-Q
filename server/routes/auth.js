@@ -51,6 +51,7 @@ router.post("/register", async (req, res, next) => {
 			userId: user._id,
 			otp: code,
 		}).save();
+    
 
     const msg = `
     <html>
@@ -79,8 +80,8 @@ router.post("/register", async (req, res, next) => {
 router.post('/verify', async (req, res, next) => {
   try {
     const { email, otp } = req.body;
-    console.log(email);
-    console.log(otp);
+    // console.log(email);
+    // console.log(otp);
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ msg: 'User not found', status: false });
@@ -94,7 +95,7 @@ router.post('/verify', async (req, res, next) => {
     user.verified = true;
     await user.save();
     await Otp.deleteOne({ _id: otpRecord._id });
-    console.log(user);
+    //console.log(user);
     return res.json({ msg: "Email verified successfully", status: true ,user});
     
   } catch (error) {

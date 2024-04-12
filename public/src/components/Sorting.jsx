@@ -1,7 +1,8 @@
 import React ,{useState} from 'react';
+import { useLocation } from 'react-router-dom';
 
-export default function Sorting({ posts, setPosts , isusername}) {
-  
+export default function Sorting({ posts, setPosts}) {
+  const location =useLocation();
   const [oldtonew, setoldtonew] =useState(false);
 
   const OldtoNew = () => {
@@ -28,12 +29,12 @@ export default function Sorting({ posts, setPosts , isusername}) {
   return (
     <div className='FormContainer bg-green-400'>
       <p>Sort by:</p>
-      {oldtonew==false ? (
+      {oldtonew=== false ? (
             <button className='block' onClick={OldtoNew}>Oldest to Latest</button>
       ) : (
         <button className='block' onClick={OldtoNew}>Latest to Oldest</button>
       )}
-      {isusername==false && (
+      {!location.search && (
          <button className='block' onClick={UserSorting}>Username</button>
       )}
       
