@@ -48,6 +48,7 @@ export default function Post() {
     }
     //   console.log(text);
     //   console.log(username);
+    
     const { data } = await axios.post(addPostRoute, {
       text,
       currusername,
@@ -76,7 +77,11 @@ export default function Post() {
       return (
         <>
           <div className="posts-section">
+          {clickedUsername === currusername ? (
+            <p>My Posts</p>
+          ) : (
             <p>{clickedUsername} Posts</p>
+          )}
             <ul>
               {posts &&
                 posts
@@ -106,12 +111,14 @@ export default function Post() {
             <div className="heading">
               <h1>WRITE POST</h1>
             </div>
-            <input
-              type="text"
+            <textarea
               placeholder="ADD TEXT HERE"
               name="text"
-              min="1"
+              minLength={1}
+              rows={4} 
+              style={{ width: '100%', maxWidth: '500px' }} 
             />
+
             <button type="submit">ADD POST</button>
           </form>
           <div className="posts-section">
