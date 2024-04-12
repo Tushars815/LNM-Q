@@ -6,21 +6,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Reply from "./Reply";
 import "../css/post.css";
 import Spinner from "./Spinner";
+import Sorting from "./Sorting";
 
 export default function Post() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [posts, setposts] = useState([]);
-  const [reload, setreload] = useState(false);
-  const [currusername, setusername] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [reload, setReload] = useState(false);
+  const [currUsername, setCurrUsername] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.getItem("USER")) {
-      const data = JSON.parse(localStorage.getItem("USER")).username;
-      setusername(data);
-    }
-  },[]);
 
   useEffect(() => {
     setLoading(true);
@@ -29,15 +23,22 @@ export default function Post() {
       .then((res) => {
         const postData = Array.isArray(res.data) ? res.data.reverse() : [];
         setTimeout(() => {
-          setposts(postData);
+          setPosts(postData);
           setLoading(false);
-        },600);
+        }, 600);
       })
       .catch((e) => {
         console.log(e);
-        setLoading(false); // Make sure to set loading to false on error too
+        setLoading(false);
       });
   }, [reload]);
+
+  useEffect(() => {
+    if (localStorage.getItem("USER")) {
+      const data = JSON.parse(localStorage.getItem("USER")).username;
+      setCurrUsername(data);
+    }
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -46,12 +47,9 @@ export default function Post() {
       alert("Empty");
       return false;
     }
-    //   console.log(text);
-    //   console.log(username);
-    
     const { data } = await axios.post(addPostRoute, {
       text,
-      currusername,
+      currusername: currUsername,
     });
     if (data.status === false) {
       alert(data.msg);
@@ -60,12 +58,13 @@ export default function Post() {
       alert("Post Added Successfully");
     }
     event.target.elements.text.value = "";
-    setreload(!reload);
+    setReload(!reload);
   };
 
   const handleReplyClick = (postId) => {
     navigate(`/posts/${postId}`);
   };
+
   const handleUsernameClick = (username) => {
     navigate(`/posts?username=${username}`);
   };
@@ -77,11 +76,11 @@ export default function Post() {
       return (
         <>
           <div className="posts-section">
-          {clickedUsername === currusername ? (
-            <p>My Posts</p>
-          ) : (
-            <p>{clickedUsername} Posts</p>
-          )}
+            {clickedUsername === currUsername ? (
+              <p>My Posts</p>
+            ) : (
+              <p>{clickedUsername} Posts</p>
+            )}
             <ul>
               {posts &&
                 posts
@@ -97,13 +96,13 @@ export default function Post() {
                   ))}
             </ul>
           </div>
-          {loading? <Spinner/>:null}
+          {loading ? <Spinner /> : null}
         </>
       );
     } else {
       return (
         <>
-          <button onClick={() => handleUsernameClick(currusername)}>
+          <button onClick={() => handleUsernameClick(currUsername)}>
             My Profile
           </button>
           <p>All Posts</p>
@@ -115,8 +114,8 @@ export default function Post() {
               placeholder="ADD TEXT HERE"
               name="text"
               minLength={1}
-              rows={4} 
-              style={{ width: '100%', maxWidth: '500px' }} 
+              rows={4}
+              style={{ width: '100%', maxWidth: '500px' }}
             />
 
             <button type="submit">ADD POST</button>
@@ -134,13 +133,13 @@ export default function Post() {
                       <button> Reply </button>
                     </div>
                     <div className="post-time">
-                    <p>{new Date(post.createdAt).toLocaleString()}</p>
+                      <p>{new Date(post.createdAt).toLocaleString()}</p>
                     </div>
                     <br />
                   </li>
                 ))}
             </ul>
-            {loading? <Spinner/>:null}
+            {loading ? <Spinner /> : null}
           </div>
         </>
       );
@@ -150,6 +149,7 @@ export default function Post() {
   return (
     <div className="FormContainer">
       <Logout />
+      <Sorting posts={posts} setPosts={setPosts}/>
       {showPosts()}
     </div>
   );
