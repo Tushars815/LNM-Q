@@ -4,7 +4,7 @@ const otpSchema = new mongoose.Schema({
 	userId: {
 		type: mongoose.Schema.Types.ObjectId,
 		required: true,
-		ref: "user",
+		ref: "User",
 		unique: true
 	},
 	otp: { 
@@ -14,7 +14,7 @@ const otpSchema = new mongoose.Schema({
 	createdAt: { 
         type: Date, 
         default: Date.now, 
-        expires: 3600 
+        expires: 600
     },
 });
 

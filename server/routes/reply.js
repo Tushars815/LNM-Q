@@ -1,6 +1,6 @@
 const Reply = require("../models/replyModel");
 const Post = require("../models/postModel");
-
+const User = require("../models/userModel")
 const router = require("express").Router();
 
 
@@ -10,13 +10,13 @@ router.post("/addreply", async (req, res, next) => {
         const username = req.body.currusername;
         const text = req.body.text;
         const postId= req.body.postId;
-       // console.log(postId);
+        const userId= req.body.userId;     
         const post = await Post.findOne({ _id: postId });
         const reply= await Reply.create({
             text,
-            username
+            username,
+            userId
           });
-      //  console.log(reply.createdAt);
         post.replies.push(reply._id);
         await post.save();
         return res.json({status: true});
@@ -33,6 +33,7 @@ router.post("/addreply", async (req, res, next) => {
       if (!reply) {
         return res.status(404).json({ status: false, msg: "Reply not found" });
       }
+
       await Reply.deleteOne({ _id: replyId });
   
       const post = await Post.findOne({ _id: postId });
@@ -41,6 +42,7 @@ router.post("/addreply", async (req, res, next) => {
       }
       post.replies = post.replies.filter((id) => id.toString() !== replyId);
       await post.save();
+
       return res.json({ status: true, msg: "Reply deleted successfully" });
     } catch (ex) {
       next(ex);

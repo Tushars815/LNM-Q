@@ -6,10 +6,7 @@ const router = require("express").Router();
 
 router.get("/allposts", async (req, res, next) => {
   try {
-    //console.log("backend");
     const allPosts = await Post.find();
-    // console.log("backend");
-    // console.log(allPosts);
     res.status(200).json(allPosts);
   } catch (ex) {
     next(ex);
@@ -18,10 +15,8 @@ router.get("/allposts", async (req, res, next) => {
 
 router.get("/allposts/:postId", async (req, res, next) => {
   try {
-    // console.log("Reply");
     const postId = req.params.postId;
     const post = await Post.findOne({ _id: postId }).populate("replies");
-
     if (!post) {
       return res.status(404).json({ status: false, msg: "Post not found" });
     }
@@ -29,12 +24,15 @@ router.get("/allposts/:postId", async (req, res, next) => {
     const populatedPost = {
       _id: post._id,
       text: post.text,
+      topic: post.topic,
       username: post.username,
+      userId: post.userId,
       createdAt: post.createdAt,
       replies: post.replies.map((reply) => ({
         _id: reply._id,
         text: reply.text,
         username: reply.username,
+        userId: reply.userId,
         createdAt: reply.createdAt
       })),
     };
@@ -48,16 +46,17 @@ router.get("/allposts/:postId", async (req, res, next) => {
 router.post("/addpost", async (req, res, next) => {
   try {
     const username = req.body.currusername;
-    const text = req.body.text;
-    const user = await User.findOne({ username });
+    const userId= req.body.currUserId;
+    const {text,topic} = req.body;
+    const user = await User.findOne({ _id: userId });
     if (!user) {
       return res.status(404).json({ status:false, msg: "User not found" });
     }
-    // console.log(text);
-    // console.log(username);
     const post = await Post.create({
       text,
+      topic,
       username,
+      userId
     });
     user.posts.push(post._id);
     await user.save();
@@ -75,9 +74,17 @@ router.post("/deletepost", async(req,res,next) =>{
     if (!post) {
       return res.status(404).json({ status:false, msg: "Post not found" });
     }
+    const userId=post.userId;
     await Reply.deleteMany({ _id: { $in: post.replies } });
-
+    
     await Post.deleteOne({ _id: postId });
+
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+     return res.status(404).json({ status: false, msg: "User not found" });
+    }
+    user.posts = user.posts.filter((id) => id.toString() !== postId);
+    await user.save();
 
     return res.json({ status: true, msg: "Post deleted successfully" });
 

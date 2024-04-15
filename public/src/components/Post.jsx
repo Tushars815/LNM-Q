@@ -13,12 +13,13 @@ export default function Post() {
   const [posts, setPosts] = useState([]);
   const [reload, setReload] = useState(false);
   const [currUsername, setCurrUsername] = useState(null);
+  const [currUserId, setCurrUserId] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isusername, setIsUsername] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    axios
+    const GetPosts = async ()=>{
+      axios
       .get(`${allPostsRoute}`)
       .then((res) => {
         const postData = Array.isArray(res.data) ? res.data.reverse() : [];
@@ -31,25 +32,37 @@ export default function Post() {
         console.log(e);
         setLoading(false);
       });
+    }
+    GetPosts();
+    
   }, [reload]);
 
   useEffect(() => {
     if (localStorage.getItem("USER")) {
-      const data = JSON.parse(localStorage.getItem("USER")).username;
-      setCurrUsername(data);
+      const username = JSON.parse(localStorage.getItem("USER")).username;
+      const userId= JSON.parse(localStorage.getItem("USER"))._id;
+      setCurrUsername(username);
+      setCurrUserId(userId);
     }
   }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const text = event.target.elements.text.value;
+    const topic =event.target.elements.topic.value;
     if (text.length < 1) {
       alert("Empty");
-      return false;
+      return ;
+    }
+    if(topic.length<1){
+      alert("Topic Required");
+      return ;
     }
     const { data } = await axios.post(addPostRoute, {
       text,
+      topic,
       currusername: currUsername,
+      currUserId
     });
     if (data.status === false) {
       alert(data.msg);
@@ -58,6 +71,7 @@ export default function Post() {
       alert("Post Added Successfully");
     }
     event.target.elements.text.value = "";
+    event.target.elements.topic.value = "";
     setReload(!reload);
   };
 
@@ -88,6 +102,7 @@ export default function Post() {
                   .map((post) => (
                     <li key={post._id}>
                       <div onClick={() => handleReplyClick(post._id)}>
+                        <p>{post.topic}</p>
                         <p>{post.text}</p>
                         <p>{new Date(post.createdAt).toLocaleString()}</p>
                         <button> Reply </button>
@@ -111,6 +126,12 @@ export default function Post() {
             <div className="heading">
               <h1>WRITE POST</h1>
             </div>
+            <input
+              type="text"
+              placeholder="Topic"
+              name="topic"
+              min="1"
+            />
             <textarea
               placeholder="ADD TEXT HERE"
               name="text"
@@ -118,7 +139,6 @@ export default function Post() {
               rows={4}
               style={{ width: '100%', maxWidth: '500px' }}
             />
-
             <button type="submit">ADD POST</button>
           </form>
           <div className="posts-section">
@@ -130,6 +150,7 @@ export default function Post() {
                       {post.username}
                     </p>
                     <div onClick={() => handleReplyClick(post._id)}>
+                      <p>{post.topic}</p>
                       <p>{post.text}</p>
                       <button> Reply </button>
                     </div>

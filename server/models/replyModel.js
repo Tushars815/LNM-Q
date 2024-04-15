@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const ReplySchema = mongoose.Schema({
 
-    text: {
+      text: {
         type: String,
         required: true
       },
@@ -10,8 +10,12 @@ const ReplySchema = mongoose.Schema({
         type: String,
         required: true
       },
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+      }
     },
-
     {
       timestamps: true,
   

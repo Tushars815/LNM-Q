@@ -1,12 +1,27 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { registerRoute } from "../utils/APIRoutes";
+import { registerRoute, deleteUnverifiedRoute } from "../utils/APIRoutes";
 
 const im = require("../assets/im.jpg");
 
 export default function Register() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const deleteUnverified = async () => {
+      try {
+        localStorage.removeItem('verificationEmail');
+        const { data } = await axios.post(deleteUnverifiedRoute);
+        if (data.status === false) {
+          alert(data.msg);
+        }
+      } catch (error) {
+        console.error('Error deleting unverified email:', error);
+      }
+    };
+    deleteUnverified(); 
+  }, []); 
 
   useEffect(() => {
     if (localStorage.getItem("USER")) {
@@ -56,45 +71,10 @@ export default function Register() {
         navigate("/verify");
       }
     }
-    // console.log("Form Submitted register");
   };
 
   return (
     <>
-      {/* <div className="FormContainer">
-        <form action="" onSubmit={(event) => handleSubmit(event)}>
-          <div className="brand">
-            <div className="heading">
-              <h1>LNM Q</h1>
-          </div>
-            <h2>REGISTER</h2>
-          </div>
-          <input
-            type="text"
-            placeholder="Username"
-            name="username"
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            name="email"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            name="confirmPassword"
-          />
-          <button type="submit">Create User</button>
-          <span>
-            Already have an account ? <Link to="/login">Login.</Link>
-          </span>
-        </form>
-        </div> */}
       <div className="flex items-center justify-center min-h-screen bg-[url('https://images.unsplash.com/photo-1596468138838-0f34c2d0773b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-fixed">
         <div className=" max-w-md mx-auto bg-[#F8E7D5] rounded-xl shadow-xl border border-gray-300 overflow-hidden md:max-w-2xl">
           <div className="md:grid md:grid-cols-2">

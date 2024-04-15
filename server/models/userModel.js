@@ -4,9 +4,8 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true,
     min: 3,
-    max: 20,
+    max: 30,
   },
   email: {
     type: String,
@@ -18,6 +17,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     min: 8,
+  },
+  year:{
+    type: String,
+    required:true
+  },
+  branch: {
+    type: String,
+    required:true
   },
   verified:{
     type: Boolean,

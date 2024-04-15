@@ -12,14 +12,17 @@ export default function Reply({ postId }) {
     const [reload, setreload] = useState(false);
     const [currusername, setusername] =useState(null);
     const [loading, setLoading] = useState(false);
+    const [currUserId, setCurrUserId] = useState(null);
 
     useEffect(()=>{
      // console.log("User check");
     if (localStorage.getItem("USER")) {
-      const data = JSON.parse(
+      const username = JSON.parse(
        localStorage.getItem("USER")
      ).username;
-     setusername(data);
+    const userId= JSON.parse(localStorage.getItem("USER"))._id;
+    setusername(username);
+    setCurrUserId(userId);
     }
   },[])
     
@@ -50,6 +53,7 @@ export default function Reply({ postId }) {
       const { data } = await axios.post(addReplyRoute, {
           text,
           currusername,
+          userId: currUserId,
           postId
       });
       if (data.status === false) {
@@ -116,10 +120,11 @@ export default function Reply({ postId }) {
                 {post && (
                 <>
                   <p>{post.username}</p>
+                  <p>{post.topic}</p>
                   <p>{post.text}</p>
                   <p>{new Date(post.createdAt).toLocaleString()}</p>
                     
-                  {currusername === post.username && (
+                  {currUserId === post.userId && (
                     <>
                       <button onClick={()=> handledeletepost()}>Delete</button>
                       <br />
@@ -133,7 +138,7 @@ export default function Reply({ postId }) {
                           <p onClick={()=> handleUsernameClick(reply.username)}>Username: {reply.username}</p>
                           <p>{reply.text}</p>
                           <p>{new Date(reply.createdAt).toLocaleString()}</p>
-                          {currusername === reply.username && (
+                          {currUserId === reply.userId && (
                             <>
                               <button onClick={()=> handledeletereply(reply._id)}>Delete</button>
                               <br/>
