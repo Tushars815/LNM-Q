@@ -66,9 +66,11 @@ export default function Reply({ postId }) {
       setreload(!reload);
     };
 
-      const handleUsernameClick = (username) => {
-        navigate(`/posts?username=${username}`);
+      const handleUsernameClick = (userId) => {
+        navigate("/profile", { state: { userId: userId } });
       };
+
+
       const handledeletepost =async ()=>{
         //console.log("hello post");
         const data =await axios.post(deletePostRoute,{
@@ -102,7 +104,7 @@ export default function Reply({ postId }) {
     return (
       <div className='FormContainer'>
         <Logout/>
-        <button onClick={()=> handleUsernameClick(currusername)}>My Profile</button>
+        <button onClick={()=> handleUsernameClick(currUserId)}>My Profile</button>
         <form action="" onSubmit={(event) => handleSubmit(event)}>
             <div className="heading">
               <h1>WRITE REPLY</h1>
@@ -135,7 +137,7 @@ export default function Reply({ postId }) {
                   <ul>
                      {post.replies && post.replies.reverse().map((reply) => (
                         <li key={reply._id}>
-                          <p onClick={()=> handleUsernameClick(reply.username)}>Username: {reply.username}</p>
+                          <p onClick={()=> handleUsernameClick(reply.userId)}>Username: {reply.username}</p>
                           <p>{reply.text}</p>
                           <p>{new Date(reply.createdAt).toLocaleString()}</p>
                           {currUserId === reply.userId && (

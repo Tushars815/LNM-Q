@@ -9,7 +9,6 @@ import Sorting from "./Sorting";
 
 export default function Post() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [posts, setPosts] = useState([]);
   const [reload, setReload] = useState(false);
   const [currUsername, setCurrUsername] = useState(null);
@@ -79,46 +78,16 @@ export default function Post() {
     navigate(`/posts/${postId}`);
   };
 
-  const handleUsernameClick = (username) => {
-    navigate(`/posts?username=${username}`);
+  const handleUsernameClick = (userId) => {
+    //navigate(`/posts?username=${username}`);
+    navigate("/profile", { state: { userId: userId } });
   };
 
-  const showPosts = () => {
-    if (location.search) {
-      const params = new URLSearchParams(location.search);
-      const clickedUsername = params.get("username");
-      return (
-        <>
-          <div className="posts-section">
-            {clickedUsername === currUsername ? (
-              <p>My Posts</p>
-            ) : (
-              <p>{clickedUsername} Posts</p>
-            )}
-            <ul>
-              {posts &&
-                posts
-                  .filter((post) => post.username === clickedUsername)
-                  .map((post) => (
-                    <li key={post._id}>
-                      <div onClick={() => handleReplyClick(post._id)}>
-                        <p>{post.topic}</p>
-                        <p>{post.text}</p>
-                        <p>{new Date(post.createdAt).toLocaleString()}</p>
-                        <button> Reply </button>
-                      </div>
-                      <br />
-                    </li>
-                  ))}
-            </ul>
-          </div>
-          {loading ? <Spinner /> : null}
-        </>
-      );
-    } else {
-      return (
-        <>
-          <button onClick={() => handleUsernameClick(currUsername)} >
+  return (
+    <div className="FormContainer">
+      <Logout />
+      <Sorting posts={posts} setPosts={setPosts} username={false}/>
+      <button onClick={() => handleUsernameClick(currUserId)} >
             My Profile
           </button>
           <p>All Posts</p>
@@ -146,7 +115,7 @@ export default function Post() {
               {posts &&
                 posts.map((post) => (
                   <li key={post._id}>
-                    <p onClick={() => handleUsernameClick(post.username)}>
+                    <p onClick={() => handleUsernameClick(post.userId)}>
                       {post.username}
                     </p>
                     <div onClick={() => handleReplyClick(post._id)}>
@@ -163,16 +132,6 @@ export default function Post() {
             </ul>
             {loading ? <Spinner /> : null}
           </div>
-        </>
-      );
-    }
-  };
-
-  return (
-    <div className="FormContainer">
-      <Logout />
-      <Sorting posts={posts} setPosts={setPosts}/>
-      {showPosts()}
     </div>
   );
 }

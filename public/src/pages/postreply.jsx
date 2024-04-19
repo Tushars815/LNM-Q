@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect } from "react";
 import Reply from "../components/Reply";
-import { useNavigate, Link , useParams } from "react-router-dom";
+import { useNavigate , useParams } from "react-router-dom";
 
 
-export default function Posts() {
+export default function PostReply() {
   const navigate = useNavigate();
   useEffect(() => {
     if (!localStorage.getItem("USER")) {

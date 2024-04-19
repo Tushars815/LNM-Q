@@ -7,13 +7,13 @@ const bcrypt = require("bcrypt");
 
 router.post("/login", async (req, res, next) => {
   try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
     if (!user)
-      return res.json({ msg: "Incorrect Username or Password", status: false });
+      return res.json({ msg: "Incorrect email", status: false });
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid)
-      return res.json({ msg: "Incorrect Username or Password", status: false });
+      return res.json({ msg: "Incorrect Password", status: false });
     if(!user.verified) return res.json({ msg: "Email not Verified", status: false });
     const userObject = user.toObject();
     delete userObject.password;
@@ -35,13 +35,13 @@ router.post("/register", async (req, res, next) => {
       }
       return res.json({ msg: "Email already used", status: false });
     }
-    const str="@lnmiit.ac.in";
-    if(email.length<str.length)
-      return res.json({ msg: "Not LNMIIT User", status: false });
+    // const str="@lnmiit.ac.in";
+    // if(email.length<str.length)
+    //   return res.json({ msg: "Not LNMIIT User", status: false });
 
-    const last13Substring = email.substring(email.length - 13);
-    if(last13Substring!=str)
-      return res.json({ msg: "Not LNMIIT User", status: false });
+    // const last13Substring = email.substring(email.length - 13);
+    // if(last13Substring!=str)
+    //   return res.json({ msg: "Not LNMIIT User", status: false });
     
     const hashedPassword = await bcrypt.hash(password, 10);
     const year=email.substring(0,2);

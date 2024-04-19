@@ -29,9 +29,9 @@ export default function Login() {
   }, []);
 
   const validateForm = (event) => {
-    const username = event.target.elements.username.value;
+    const email = event.target.elements.email.value;
     const password = event.target.elements.password.value;
-    if (username === "") {
+    if (email === "") {
       alert("Email and Password is required.");
       return false;
     } else if (password === "") {
@@ -44,10 +44,10 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (validateForm(event)) {
-      const username = event.target.elements.username.value;
+      const email = event.target.elements.email.value;
       const password = event.target.elements.password.value;
       const { data } = await axios.post(loginRoute, {
-        username,
+        email,
         password,
       });
       if (data.status === false) {
@@ -87,8 +87,8 @@ export default function Login() {
                   <input
                     type="text"
                     className="w-full p-3 border border-gray-300 rounded-md"
-                    placeholder="Username"
-                    name="username"
+                    placeholder="Email"
+                    name="email"
                     min="3"
                   />
                   <input
